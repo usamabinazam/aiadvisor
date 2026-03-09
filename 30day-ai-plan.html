@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30-Day AI Automation Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a26;
+    --border: #2a2a3e;
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --warn: #f59e0b;
+    --text: #e8e8f0;
+    --muted: #6b7280;
+    --w1: #00e5ff;
+    --w2: #7c3aed;
+    --w3: #10b981;
+    --w4: #f59e0b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(0,229,255,0.15), rgba(124,58,237,0.15));
+    border: 1px solid rgba(0,229,255,0.3);
+    padding: 6px 20px;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .header-sub {
+    color: var(--muted);
+    font-size: 15px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--color);
+  }
+
+  .stat-val {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--color);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Progress overview */
+  .progress-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .progress-title {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+  }
+
+  .progress-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent3);
+  }
+
+  .master-bar {
+    height: 8px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .master-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    border-radius: 999px;
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    width: 0%;
+  }
+
+  .week-bars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .week-mini {
+    text-align: center;
+  }
+
+  .week-mini-label {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .week-mini-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  .week-mini-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.6s ease;
+    width: 0%;
+  }
+
+  .week-mini-pct {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+  }
+
+  /* Weeks */
+  .week {
+    margin-bottom: 40px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .week-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .week-header::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--wcolor);
+    border-radius: 4px 0 0 4px;
+  }
+
+  .week-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at left center, rgba(255,255,255,0.03), transparent 60%);
+  }
+
+  .week-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--wcolor);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .week-title {
+    font-size: 20px;
+    font-weight: 800;
+    flex: 1;
+  }
+
+  .week-dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .week-kpi-strip {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding: 0 4px;
+  }
+
+  .kpi-chip {
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .kpi-chip.target {
+    border-color: var(--wcolor);
+    color: var(--wcolor);
+    background: rgba(0,0,0,0.3);
+  }
+
+  /* Tasks */
+  .tasks-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .task-item:hover {
+    border-color: rgba(255,255,255,0.15);
+    background: var(--surface2);
+    transform: translateX(3px);
+  }
+
+  .task-item.done {
+    opacity: 0.5;
+  }
+
+  .task-item.done .task-text {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  .task-item.done .task-cb {
+    background: var(--wcolor);
+    border-color: var(--wcolor);
+  }
+
+  .task-item.done .task-cb::after {
+    content: '✓';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #000;
+    font-weight: 800;
+  }
+
+  .task-cb {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    position: relative;
+    transition: all 0.2s ease;
+    margin-top: 1px;
+  }
+
+  .task-item:hover .task-cb {
+    border-color: var(--wcolor);
+  }
+
+  .task-content {
+    flex: 1;
+  }
+
+  .task-text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    transition: all 0.2s;
+  }
+
+  .task-meta {
+    display: flex;
+    gap: 8px;
+    margin-top: 5px;
+    flex-wrap: wrap;
+  }
+
+  .task-tag {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.04);
+    color: var(--muted);
+    border: 1px solid rgba(255,255,255,0.06);
+    letter-spacing: 0.5px;
+  }
+
+  .task-tag.learn { color: var(--accent); border-color: rgba(0,229,255,0.2); }
+  .task-tag.build { color: var(--accent2); border-color: rgba(124,58,237,0.2); }
+  .task-tag.outreach { color: var(--accent3); border-color: rgba(16,185,129,0.2); }
+  .task-tag.earn { color: var(--warn); border-color: rgba(245,158,11,0.2); }
+
+  .task-day {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    min-width: fit-content;
+    padding-top: 3px;
+  }
+
+  /* Section headers within weeks */
+  .section-label {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    padding: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Tools section */
+  .tools-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .tools-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  .tools-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+  }
+
+  .tool-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: all 0.2s;
+  }
+
+  .tool-card:hover {
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+  }
+
+  .tool-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .tool-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .tool-name {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .tool-role {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .tool-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .tool-badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(16,185,129,0.1);
+    color: var(--accent3);
+    border: 1px solid rgba(16,185,129,0.2);
+  }
+
+  .tool-badge.paid {
+    background: rgba(245,158,11,0.1);
+    color: var(--warn);
+    border-color: rgba(245,158,11,0.2);
+  }
+
+  /* Goal card */
+  .goal-card {
+    background: linear-gradient(135deg, rgba(0,229,255,0.05), rgba(124,58,237,0.05));
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 40px;
+    text-align: center;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+
+  .goal-amount {
+    font-size: 64px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent3), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .goal-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .goal-steps {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .goal-step {
+    text-align: center;
+  }
+
+  .goal-step-val {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--warn);
+  }
+
+  .goal-step-label {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .goal-step-arrow {
+    font-size: 20px;
+    color: var(--border);
+    align-self: center;
+    padding-top: 8px;
+  }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Celebration */
+  .confetti-msg {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--accent3), var(--accent));
+    color: #000;
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 14px;
+    z-index: 100;
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: translateX(-50%) scale(0.7); }
+    to { opacity: 1; transform: translateX(-50%) scale(1); }
+  }
+
+  .week[data-week="1"] { animation-delay: 0.3s; }
+  .week[data-week="2"] { animation-delay: 0.4s; }
+  .week[data-week="3"] { animation-delay: 0.5s; }
+  .week[data-week="4"] { animation-delay: 0.6s; }
+
+  @media (max-width: 600px) {
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .week-bars { grid-template-columns: repeat(2, 1fr); }
+    .goal-steps { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="confetti-msg" id="toast">🎉 Task complete! Keep going!</div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-badge">⚡ AI Automation Roadmap</div>
+    <h1>30-Day Launch Plan</h1>
+    <p class="header-sub">n8n · SEO + AI · First $300 · First 2 Clients</p>
+  </div>
+
+  <!-- Goal Card -->
+  <div class="goal-card">
+    <div class="goal-amount">$300</div>
+    <div class="goal-label">Target Revenue — Day 30</div>
+    <div class="goal-steps">
+      <div class="goal-step">
+        <div class="goal-step-val">2 hrs/day</div>
+        <div class="goal-step-label">Daily Learning</div>
+      </div>
+      <div class="goal-step-arrow">→</div>
+      <div class="goal-step">
+        <div class="goal-step-val">2 Free</div>
+        <div class="goal-step-label">Testimonials</div>
+      </div>
+      <div class="goal-step-arrow">→</div>
+      <div class="goal-step">
+        <div class="goal-step-val">$300</div>
+        <div class="goal-step-label">First Paid Client</div>
+      </div>
+      <div class="goal-step-arrow">→</div>
+      <div class="goal-step">
+        <div class="goal-step-val">$3,000</div>
+        <div class="goal-step-label">Month 6 Target</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card" style="--color: var(--accent)">
+      <span class="stat-val" id="totalTasks">0</span>
+      <span class="stat-label">Total Tasks</span>
+    </div>
+    <div class="stat-card" style="--color: var(--accent3)">
+      <span class="stat-val" id="doneTasks">0</span>
+      <span class="stat-label">Completed</span>
+    </div>
+    <div class="stat-card" style="--color: var(--warn)">
+      <span class="stat-val" id="pctDone">0%</span>
+      <span class="stat-label">Progress</span>
+    </div>
+    <div class="stat-card" style="--color: var(--accent2)">
+      <span class="stat-val" id="daysLeft">30</span>
+      <span class="stat-label">Days to Go</span>
+    </div>
+  </div>
+
+  <!-- Master Progress -->
+  <div class="progress-section">
+    <div class="progress-header">
+      <span class="progress-title">Overall Journey</span>
+      <span class="progress-pct" id="masterPct">0%</span>
+    </div>
+    <div class="master-bar"><div class="master-fill" id="masterFill"></div></div>
+    <div class="week-bars">
+      <div class="week-mini">
+        <div class="week-mini-label">Week 1</div>
+        <div class="week-mini-bar"><div class="week-mini-fill" id="w1fill" style="background: var(--w1)"></div></div>
+        <div class="week-mini-pct" style="color:var(--w1)" id="w1pct">0%</div>
+      </div>
+      <div class="week-mini">
+        <div class="week-mini-label">Week 2</div>
+        <div class="week-mini-bar"><div class="week-mini-fill" id="w2fill" style="background: var(--w2)"></div></div>
+        <div class="week-mini-pct" style="color:var(--w2)" id="w2pct">0%</div>
+      </div>
+      <div class="week-mini">
+        <div class="week-mini-label">Week 3</div>
+        <div class="week-mini-bar"><div class="week-mini-fill" id="w3fill" style="background: var(--w3)"></div></div>
+        <div class="week-mini-pct" style="color:var(--w3)" id="w3pct">0%</div>
+      </div>
+      <div class="week-mini">
+        <div class="week-mini-label">Week 4</div>
+        <div class="week-mini-bar"><div class="week-mini-fill" id="w4fill" style="background: var(--w4)"></div></div>
+        <div class="week-mini-pct" style="color:var(--w4)" id="w4pct">0%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 1 -->
+  <div class="week" data-week="1">
+    <div class="week-header" style="--wcolor: var(--w1)">
+      <div>
+        <div class="week-num">Week 01 · Days 1–7</div>
+        <div class="week-title">Foundation & Core n8n Mastery</div>
+      </div>
+      <div class="week-dates">Learn · Build · Explore</div>
+    </div>
+    <div class="week-kpi-strip">
+      <div class="kpi-chip target">🎯 Build 3 working automations</div>
+      <div class="kpi-chip target">🎯 Deploy n8n locally + cloud</div>
+      <div class="kpi-chip target">🎯 Map 3 niche pain points</div>
+      <div class="kpi-chip">⏱ 2 hrs/day weekdays</div>
+      <div class="kpi-chip">⏱ 4 hrs/day weekends</div>
+      <div class="kpi-chip">💰 $0 earned (invest week)</div>
+    </div>
+
+    <div class="tasks-grid" id="week1tasks"></div>
+  </div>
+
+  <!-- WEEK 2 -->
+  <div class="week" data-week="2">
+    <div class="week-header" style="--wcolor: var(--w2)">
+      <div>
+        <div class="week-num">Week 02 · Days 8–14</div>
+        <div class="week-title">SEO + AI Services Design</div>
+      </div>
+      <div class="week-dates">Package · Pitch · Practice</div>
+    </div>
+    <div class="week-kpi-strip">
+      <div class="kpi-chip target">🎯 1 service packaged with price</div>
+      <div class="kpi-chip target">🎯 5 outreach messages sent</div>
+      <div class="kpi-chip target">🎯 Land 1st free testimonial client</div>
+      <div class="kpi-chip target">🎯 2 advanced workflows built</div>
+      <div class="kpi-chip">💰 $0–50 (optional)</div>
+    </div>
+
+    <div class="tasks-grid" id="week2tasks"></div>
+  </div>
+
+  <!-- WEEK 3 -->
+  <div class="week" data-week="3">
+    <div class="week-header" style="--wcolor: var(--w3)">
+      <div>
+        <div class="week-num">Week 03 · Days 15–21</div>
+        <div class="week-title">Deliver, Prove & Collect Testimonials</div>
+      </div>
+      <div class="week-dates">Execute · Prove · Collect Social Proof</div>
+    </div>
+    <div class="week-kpi-strip">
+      <div class="kpi-chip target">🎯 Deliver 2 free client projects</div>
+      <div class="kpi-chip target">🎯 Collect 2 written testimonials</div>
+      <div class="kpi-chip target">🎯 10 paid outreach messages</div>
+      <div class="kpi-chip target">🎯 Set price: $150–300/automation</div>
+      <div class="kpi-chip">💰 Target $0–100</div>
+    </div>
+
+    <div class="tasks-grid" id="week3tasks"></div>
+  </div>
+
+  <!-- WEEK 4 -->
+  <div class="week" data-week="4">
+    <div class="week-header" style="--wcolor: var(--w4)">
+      <div>
+        <div class="week-num">Week 04 · Days 22–30</div>
+        <div class="week-title">First Paid Client — Close $300</div>
+      </div>
+      <div class="week-dates">Convert · Earn · Scale</div>
+    </div>
+    <div class="week-kpi-strip">
+      <div class="kpi-chip target">🎯 Close $300 paid project</div>
+      <div class="kpi-chip target">🎯 Deliver & get 3rd testimonial</div>
+      <div class="kpi-chip target">🎯 Build referral pipeline</div>
+      <div class="kpi-chip target">🎯 Plan Month 2 ($600 target)</div>
+      <div class="kpi-chip">💰 Target $300+</div>
+    </div>
+
+    <div class="tasks-grid" id="week4tasks"></div>
+  </div>
+
+  <!-- Tools Section -->
+  <div class="tools-section">
+    <div class="tools-title">⚙️ Your Power Stack</div>
+    <div class="tools-sub">// n8n + supporting tools to 10x your speed</div>
+    <div class="tools-grid" id="toolsGrid"></div>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'roadmap_checks_v1';
+
+// Load saved state
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : {};
+  } catch(e) { return {}; }
+}
+
+function saveState(state) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+const tasks = {
+  week1: [
+    { id: 'w1_1', text: 'Install n8n locally via Docker or npm and get it running', tags: ['learn'], day: 'Day 1' },
+    { id: 'w1_2', text: 'Connect n8n to a free cloud host (Railway.app or Render.com)', tags: ['build'], day: 'Day 1–2' },
+    { id: 'w1_3', text: 'Complete n8n official beginner tutorial (nodes, triggers, flows)', tags: ['learn'], day: 'Day 2' },
+    { id: 'w1_4', text: 'Build Automation #1: Auto send email when Google Sheet row is added', tags: ['build'], day: 'Day 3' },
+    { id: 'w1_5', text: 'Connect OpenAI API to n8n — test a basic AI text generation node', tags: ['learn', 'build'], day: 'Day 4' },
+    { id: 'w1_6', text: 'Build Automation #2: AI-powered lead reply bot (Webhook → OpenAI → Gmail)', tags: ['build'], day: 'Day 5' },
+    { id: 'w1_7', text: 'Study error handling in n8n (IF nodes, retry logic, error branches)', tags: ['learn'], day: 'Day 5' },
+    { id: 'w1_8', text: 'Build Automation #3: SEO content brief generator (keyword input → AI outline → Google Doc)', tags: ['build'], day: 'Day 6–7' },
+    { id: 'w1_9', text: 'Research 3 niches to target: local biz, SaaS, or e-commerce. Pick your niche.', tags: ['outreach'], day: 'Day 7' },
+    { id: 'w1_10', text: 'Write down 5 specific pain points each niche faces that automation can solve', tags: ['outreach'], day: 'Day 7' },
+  ],
+  week2: [
+    { id: 'w2_1', text: 'Design your Signature Service: "AI + SEO Automation Package" (what it includes, price $150–300)', tags: ['build'], day: 'Day 8' },
+    { id: 'w2_2', text: 'Build a simple portfolio page on Notion or Carrd showing your 3 demo automations', tags: ['build'], day: 'Day 8–9' },
+    { id: 'w2_3', text: 'Build Automation #4: Auto-generate and post blog content using SEO keyword + AI (use your SEO skill!)', tags: ['build', 'learn'], day: 'Day 9–10' },
+    { id: 'w2_4', text: 'Learn n8n webhooks deeply — set up real-time trigger workflows', tags: ['learn'], day: 'Day 10' },
+    { id: 'w2_5', text: 'Build Automation #5: Lead capture form → CRM entry → AI welcome email sequence', tags: ['build'], day: 'Day 11' },
+    { id: 'w2_6', text: 'Write 5 cold outreach DMs for LinkedIn/Twitter targeting small businesses', tags: ['outreach'], day: 'Day 11' },
+    { id: 'w2_7', text: 'Send 5 outreach messages offering FREE automation in exchange for testimonial', tags: ['outreach'], day: 'Day 12' },
+    { id: 'w2_8', text: 'Join 3 relevant Facebook groups or Slack communities (SaaS founders, e-comm, agency owners)', tags: ['outreach'], day: 'Day 12' },
+    { id: 'w2_9', text: 'Schedule discovery call with at least 1 interested prospect from outreach', tags: ['outreach'], day: 'Day 13–14' },
+    { id: 'w2_10', text: 'Post your first value-post on LinkedIn: "I automated [X task] in 2 hours using AI — here\'s how"', tags: ['outreach'], day: 'Day 14' },
+  ],
+  week3: [
+    { id: 'w3_1', text: 'Onboard Free Client #1 — discovery call, understand their pain point, agree on deliverable', tags: ['outreach'], day: 'Day 15' },
+    { id: 'w3_2', text: 'Build and deliver automation for Free Client #1 within 3 days', tags: ['build', 'earn'], day: 'Day 15–17' },
+    { id: 'w3_3', text: 'Get written testimonial from Free Client #1 (text + permission to share)', tags: ['earn'], day: 'Day 17–18' },
+    { id: 'w3_4', text: 'Onboard Free Client #2 — repeat the above process with a different automation type', tags: ['outreach'], day: 'Day 18' },
+    { id: 'w3_5', text: 'Build and deliver automation for Free Client #2', tags: ['build', 'earn'], day: 'Day 18–20' },
+    { id: 'w3_6', text: 'Get written testimonial from Free Client #2', tags: ['earn'], day: 'Day 20–21' },
+    { id: 'w3_7', text: 'Send 10 paid outreach messages — now with "I just built X for [client], here\'s proof"', tags: ['outreach'], day: 'Day 19–21' },
+    { id: 'w3_8', text: 'Finalize your pricing page: Starter $150 / Growth $300 / Custom Quote', tags: ['earn'], day: 'Day 21' },
+    { id: 'w3_9', text: 'Post Case Study #1 on LinkedIn: Before/After of Free Client #1 automation', tags: ['outreach'], day: 'Day 21' },
+    { id: 'w3_10', text: 'Learn advanced n8n: sub-workflows, custom JS code nodes, API pagination', tags: ['learn'], day: 'Day 19–21' },
+  ],
+  week4: [
+    { id: 'w4_1', text: 'Follow up with all outreach leads — create urgency: "Spots limited this month"', tags: ['outreach'], day: 'Day 22' },
+    { id: 'w4_2', text: 'Book 3 paid discovery calls this week from your outreach pipeline', tags: ['outreach'], day: 'Day 22–24' },
+    { id: 'w4_3', text: 'Close Paid Client #1 at $300 — collect 50% upfront ($150) before starting', tags: ['earn'], day: 'Day 24–25' },
+    { id: 'w4_4', text: 'Build and deliver Paid Client #1 automation — go above and beyond', tags: ['build', 'earn'], day: 'Day 25–27' },
+    { id: 'w4_5', text: 'Collect final payment ($150) and get 3rd testimonial from paid client', tags: ['earn'], day: 'Day 27–28' },
+    { id: 'w4_6', text: 'Ask paid client for 1 referral — "Do you know anyone else who needs this?"', tags: ['outreach'], day: 'Day 28' },
+    { id: 'w4_7', text: 'Post final LinkedIn case study: "I made my first $300 from AI automation — here\'s how"', tags: ['outreach'], day: 'Day 29' },
+    { id: 'w4_8', text: 'Plan Month 2: Set $600 income target, pick 1 niche to go deep on', tags: ['learn'], day: 'Day 30' },
+    { id: 'w4_9', text: 'Document your best automation workflow as a reusable template', tags: ['build'], day: 'Day 30' },
+    { id: 'w4_10', text: '🎉 Celebrate! Review what worked, what didn\'t. Update your strategy.', tags: ['earn'], day: 'Day 30' },
+  ]
+};
+
+const tools = [
+  { icon: '🔄', name: 'n8n', role: 'Core Automation', desc: 'Your main workflow engine. Self-host for free, connect 400+ apps without code.', badge: 'FREE (self-hosted)' },
+  { icon: '🤖', name: 'OpenAI API', role: 'AI Engine', desc: 'GPT-4o for content generation, classification, email writing, and data extraction inside n8n.', badge: 'PAY PER USE', paid: true },
+  { icon: '📋', name: 'Airtable', role: 'Database / CRM', desc: 'Use as a lightweight CRM and data store. n8n has native Airtable nodes — perfect for client data.', badge: 'FREE PLAN' },
+  { icon: '🔗', name: 'Make (Integromat)', role: 'Backup / Reference', desc: 'Study Make workflows to get automation ideas, then rebuild them in n8n for clients.', badge: 'FREE PLAN' },
+  { icon: '📬', name: 'Instantly.ai', role: 'Cold Email Outreach', desc: 'Automate your own outreach to find clients. Warm inboxes + sequences at scale.', badge: 'PAID', paid: true },
+  { icon: '🧠', name: 'Perplexity AI', role: 'Research', desc: 'Research client niches, automation opportunities, and competitor analysis faster than Google.', badge: 'FREE PLAN' },
+  { icon: '📊', name: 'Google Sheets', role: 'Data Layer', desc: 'Use as a free database. n8n reads/writes Google Sheets natively — great for client dashboards.', badge: 'FREE' },
+  { icon: '🎨', name: 'Carrd.co', role: 'Portfolio Site', desc: 'Build your automation portfolio/landing page in 30 mins. Clean, fast, cheap.', badge: '$19/yr', paid: true },
+  { icon: '💬', name: 'Slack / Discord Bots', role: 'Demo Projects', desc: 'Build AI bots for Slack/Discord — easy to demo, clients love seeing chatbots live.', badge: 'FREE' },
+  { icon: '🔑', name: 'Apify', role: 'Web Scraping', desc: 'Scrape leads, competitor data, or SEO info. Connects to n8n for full automation pipelines.', badge: 'FREE PLAN' },
+  { icon: '📝', name: 'Notion', role: 'Client Delivery', desc: 'Deliver automation docs and SOPs to clients via Notion. Looks professional, zero cost.', badge: 'FREE' },
+  { icon: '📈', name: 'Apollo.io', role: 'Lead Generation', desc: 'Find business owners to cold outreach. Use SEO + automation services as your offer.', badge: 'FREE PLAN' },
+];
+
+function renderTasks(containerId, taskList, weekNum) {
+  const state = loadState();
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+
+  const labels = {
+    learn: '📚 LEARN',
+    build: '🔧 BUILD',
+    outreach: '📣 OUTREACH',
+    earn: '💰 EARN'
+  };
+
+  taskList.forEach(task => {
+    const isDone = !!state[task.id];
+    const div = document.createElement('div');
+    div.className = `task-item${isDone ? ' done' : ''}`;
+    div.style.setProperty('--wcolor', `var(--w${weekNum})`);
+
+    const tagsHtml = task.tags.map(t => `<span class="task-tag ${t}">${labels[t]}</span>`).join('');
+
+    div.innerHTML = `
+      <div class="task-cb"></div>
+      <div class="task-content">
+        <div class="task-text">${task.text}</div>
+        <div class="task-meta">${tagsHtml}</div>
+      </div>
+      <div class="task-day">${task.day}</div>
+    `;
+
+    div.addEventListener('click', () => {
+      const currentState = loadState();
+      currentState[task.id] = !currentState[task.id];
+      saveState(currentState);
+      renderAll();
+      if (currentState[task.id]) showToast();
+    });
+
+    container.appendChild(div);
+  });
+}
+
+function renderTools() {
+  const grid = document.getElementById('toolsGrid');
+  grid.innerHTML = '';
+  tools.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'tool-card';
+    card.innerHTML = `
+      <div class="tool-top">
+        <div class="tool-icon">${t.icon}</div>
+        <div>
+          <div class="tool-name">${t.name}</div>
+          <div class="tool-role">${t.role}</div>
+        </div>
+      </div>
+      <div class="tool-desc">${t.desc}</div>
+      <div class="tool-badge ${t.paid ? 'paid' : ''}">${t.badge}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function updateStats() {
+  const state = loadState();
+  const allTasks = [...tasks.week1, ...tasks.week2, ...tasks.week3, ...tasks.week4];
+  const total = allTasks.length;
+  const done = allTasks.filter(t => state[t.id]).length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+
+  document.getElementById('totalTasks').textContent = total;
+  document.getElementById('doneTasks').textContent = done;
+  document.getElementById('pctDone').textContent = pct + '%';
+  document.getElementById('daysLeft').textContent = Math.max(0, 30 - Math.round((done / total) * 30));
+  document.getElementById('masterPct').textContent = pct + '%';
+  document.getElementById('masterFill').style.width = pct + '%';
+
+  // Per-week
+  [['week1',1],['week2',2],['week3',3],['week4',4]].forEach(([key, num]) => {
+    const wTasks = tasks[key];
+    const wDone = wTasks.filter(t => state[t.id]).length;
+    const wPct = wTasks.length ? Math.round((wDone / wTasks.length) * 100) : 0;
+    document.getElementById(`w${num}fill`).style.width = wPct + '%';
+    document.getElementById(`w${num}pct`).textContent = wPct + '%';
+  });
+}
+
+let toastTimeout;
+function showToast() {
+  const msgs = ['🎉 Task complete! Keep going!', '✅ Crushing it!', '🚀 One step closer to $300!', '💪 Progress made!'];
+  const toast = document.getElementById('toast');
+  toast.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+  toast.style.display = 'block';
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => { toast.style.display = 'none'; }, 2500);
+}
+
+function renderAll() {
+  renderTasks('week1tasks', tasks.week1, 1);
+  renderTasks('week2tasks', tasks.week2, 2);
+  renderTasks('week3tasks', tasks.week3, 3);
+  renderTasks('week4tasks', tasks.week4, 4);
+  updateStats();
+}
+
+renderAll();
+renderTools();
+
+// Animate progress bars on load
+setTimeout(() => {
+  document.getElementById('masterFill').style.transition = 'width 1s cubic-bezier(0.34,1.56,0.64,1)';
+}, 100);
+</script>
+</body>
+</html>
